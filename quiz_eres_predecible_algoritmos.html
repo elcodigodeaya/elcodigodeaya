@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4AE54A;--g2:#B8FF00;--b:#00AAFF;--gold:#C8A84B;--dk:#050A1A;--w:#F0EEE8;--mu:#8A9BB0}
+html,body{min-height:100vh;background:linear-gradient(135deg,#050A1A 0%,#0A1428 100%);color:var(--w);font-family:'Raleway',sans-serif;overflow-x:hidden}
+#pts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:fall linear infinite}
+@keyframes fall{0%{opacity:0;transform:translateY(-10px)}10%{opacity:1}90%{opacity:.3}100%{opacity:0;transform:translateY(100vh)}}
+.wrap{position:relative;z-index:2;max-width:660px;margin:0 auto;padding:36px 20px 80px}
+.brand{text-align:center;margin-bottom:44px}
+.b-tag{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:.8}
+.b-title{font-family:'Orbitron',monospace;font-size:clamp(18px,5vw,28px);font-weight:900;line-height:1.15;margin-bottom:8px;text-shadow:0 0 40px rgba(74,229,74,.4)}
+.b-title span{color:var(--g)}
+.b-sub{font-size:13px;color:var(--mu);font-weight:300}
+.b-line{width:60px;height:2px;background:linear-gradient(90deg,var(--g),var(--gold));margin:18px auto 0;box-shadow:0 0 12px rgba(74,229,74,.5)}
+.intro{background:rgba(0,170,255,.06);border:1px solid rgba(0,170,255,.2);border-radius:8px;padding:22px;margin-bottom:32px;position:relative;overflow:hidden}
+.intro::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--b);box-shadow:0 0 10px var(--b)}
+.i-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--b);margin-bottom:8px}
+.intro p{font-size:13.5px;line-height:1.75;color:#C8D8E8;font-weight:300;margin-bottom:8px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--w);font-weight:600}
+.pb{background:rgba(255,255,255,.06);border-radius:4px;height:4px;margin-bottom:8px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--g),var(--gold));border-radius:4px;transition:width .6s ease;box-shadow:0 0 10px rgba(74,229,74,.5)}
+.pt-txt{font-family:'Orbitron',monospace;font-size:8px;color:var(--mu);letter-spacing:2px;text-align:right;margin-bottom:28px}
+.card{background:rgba(5,10,26,.88);border:1px solid rgba(74,229,74,.2);border-radius:12px;padding:28px;margin-bottom:18px;backdrop-filter:blur(10px);animation:fi .5s ease}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--g);margin-bottom:12px}
+.q-txt{font-size:clamp(14px,3vw,18px);font-weight:600;line-height:1.45;color:var(--w);margin-bottom:24px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Raleway',sans-serif;font-size:13px;color:#C0D0E0;line-height:1.4;position:relative;overflow:hidden;transition:all .2s ease}
+.opt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);transform:scaleY(0);transition:transform .2s}
+.opt:hover{border-color:rgba(74,229,74,.4);background:rgba(74,229,74,.06);color:var(--w);transform:translateX(3px)}
+.opt:hover::before,.opt.sel::before{transform:scaleY(1)}
+.opt.sel{border-color:var(--g);background:rgba(74,229,74,.1);color:var(--w)}
+.next-btn{background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:11px 20px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;margin-top:16px;width:100%}
+.next-btn:hover{border-color:var(--g);color:var(--g)}
+.r-card{background:rgba(5,10,26,.93);border:1px solid rgba(200,168,75,.35);border-radius:12px;padding:36px 24px;text-align:center;backdrop-filter:blur(12px);animation:fi .7s ease}
+.r-ico{font-size:44px;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(200,168,75,.5))}
+.r-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);margin-bottom:10px}
+.r-title{font-family:'Orbitron',monospace;font-size:clamp(14px,3.5vw,20px);font-weight:900;line-height:1.25;margin-bottom:18px;color:var(--w);white-space:pre-line}
+.r-pct{font-family:'Orbitron',monospace;font-size:clamp(38px,8vw,58px);font-weight:900;color:var(--g);text-shadow:0 0 28px rgba(74,229,74,.6);line-height:1;margin-bottom:6px}
+.r-pct-lbl{font-size:10px;color:var(--mu);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+.r-desc{font-size:13.5px;line-height:1.75;color:#C0D0E0;font-weight:300;max-width:500px;margin:0 auto 24px;text-align:left}
+.ab-wrap{background:rgba(255,255,255,.06);border-radius:6px;height:7px;margin:14px 0 5px;overflow:hidden}
+.ab{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g),var(--gold));box-shadow:0 0 10px rgba(74,229,74,.5);transition:width 1.2s ease}
+.ab-lbls{display:flex;justify-content:space-between;font-size:8px;color:var(--mu);letter-spacing:1px;margin-bottom:28px}
+.aya-q{background:rgba(74,229,74,.06);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:16px 18px;margin:20px 0;text-align:left}
+.aya-q-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:7px}
+.aya-q p{font-style:italic;font-size:13.5px;line-height:1.7;color:#C8D8C8}
+.aya-q cite{display:block;font-size:10px;color:var(--mu);margin-top:7px;font-style:normal;letter-spacing:1px}
+.libro-box{background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.25);border-radius:10px;padding:20px;margin:20px 0;text-align:left}
+.libro-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+.libro-txt{font-size:13px;line-height:1.7;color:#C8C0A0;font-weight:300;margin-bottom:14px}
+.cta-am{display:block;border:1px solid rgba(200,168,75,.5);color:var(--gold);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:14px 20px;border-radius:7px;text-decoration:none;transition:all .25s;background:rgba(200,168,75,.08)}
+.cta-am:hover{background:rgba(200,168,75,.18);border-color:var(--gold);color:#FFD700}
+.social-links{display:flex;flex-direction:column;gap:8px;margin:20px 0}
+.social-btn{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:8px;text-decoration:none;font-family:'Raleway',sans-serif;font-size:13px;font-weight:600;transition:all .2s;border:1px solid transparent}
+.social-tiktok{background:rgba(0,0,0,.4);border-color:rgba(255,255,255,.15);color:var(--w)}
+.social-tiktok:hover{background:rgba(255,255,255,.08);border-color:var(--w)}
+.social-youtube{background:rgba(255,0,0,.1);border-color:rgba(255,0,0,.3);color:#FF6B6B}
+.social-youtube:hover{background:rgba(255,0,0,.18);border-color:#FF4444}
+.social-instagram{background:rgba(200,100,200,.1);border-color:rgba(200,100,200,.3);color:#E0A0E0}
+.social-instagram:hover{background:rgba(200,100,200,.18);border-color:#CC88CC}
+.social-ico{font-size:18px;width:24px;text-align:center}
+.share-box{background:rgba(74,229,74,.05);border:1px solid rgba(74,229,74,.15);border-radius:10px;padding:20px;margin-top:20px;text-align:center}
+.share-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:8px}
+.share-preview{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px;margin-bottom:14px;text-align:left;font-size:11.5px;line-height:1.7;color:#9AB8A0;white-space:pre-line;font-family:'Raleway',sans-serif}
+.share-btn{background:var(--g);color:#050A1A;border:none;border-radius:7px;padding:13px 24px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;width:100%;display:block}
+.share-btn:hover{background:var(--g2);transform:translateY(-2px)}
+.restart-btn{background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 24px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;margin-top:16px}
+.restart-btn:hover{border-color:var(--g);color:var(--g)}
+.start-btn{display:block;background:var(--g);color:#050A1A;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:15px 24px;border-radius:8px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 0 20px rgba(74,229,74,.3);width:100%}
+.start-btn:hover{background:var(--g2);box-shadow:0 0 30px rgba(74,229,74,.5);transform:translateY(-2px)}
+.hidden{display:none}
+.footer{text-align:center;margin-top:56px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.footer p{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:rgba(200,168,75,.35)}
+@media(max-width:480px){.wrap{padding:20px 14px 60px}.card,.r-card{padding:20px 16px}}
+</style>
+</head>
+<body>
+<div id="pts"></div>
+<div class="wrap">
+  <div class="brand">
+    <div class="b-tag">El Codigo de Aya</div>
+    <h1 class="b-title">&#191;Eres <span>Predecible</span><br>para los Algoritmos?</h1>
+    <p class="b-sub">Amazon sabe lo que vas a comprar 3 dias antes que tu</p>
+    <div class="b-line"></div>
+  </div>
+  <div class="intro">
+    <div class="i-lbl">// Protocolo de analisis algoritmico</div>
+    <p><strong>Cada clic, cada pausa, cada producto que miras</strong> alimenta un algoritmo que construye un mapa de tu mente. No adivina. Predice.</p>
+    <p>En <em>El Codigo de Aya</em>, Prometheus anticipa las decisiones de Markus antes de que las tome. Cuando el lo descubre, algo se rompe.</p>
+    <p><strong>Si una maquina puede predecir tus elecciones con 97% de precision, &#191;sigues siendo tu quien decide?</strong></p>
+  </div>
+  <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
+  <div class="pt-txt" id="pt">PREGUNTA 0 / 5</div>
+  <div id="startScreen">
+    <div class="card" style="text-align:center;padding:44px 24px">
+      <div style="font-size:40px;margin-bottom:18px">&#x1F916;</div>
+      <div class="q-num">SISTEMA LISTO</div>
+      <div class="q-txt" style="text-align:center">5 preguntas.<br>Responde con lo primero que sientas.</div>
+      <p style="font-size:12px;color:var(--mu);margin-bottom:26px">El algoritmo ya sabe la respuesta. &#191;La sabes tu?</p>
+      <button class="start-btn" id="startBtn">&#8594; INICIAR ANALISIS</button>
+    </div>
+  </div>
+  <div id="qScreen" class="hidden">
+    <div class="card" id="qCard">
+      <div class="q-num" id="qNum"></div>
+      <div class="q-txt" id="qTxt"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <button class="next-btn hidden" id="nextBtn">Siguiente &#8594;</button>
+  </div>
+  <div id="rScreen" class="hidden">
+    <div class="r-card">
+      <div class="r-ico" id="rIco"></div>
+      <div class="r-lbl">// Analisis completado</div>
+      <div class="r-title" id="rTitle"></div>
+      <div class="r-pct" id="rPct"></div>
+      <div class="r-pct-lbl">de predecibilidad algoritmica</div>
+      <div class="ab-wrap"><div class="ab" id="ab" style="width:0%"></div></div>
+      <div class="ab-lbls"><span>IMPREDECIBLE</span><span>TOTALMENTE PREDECIBLE</span></div>
+      <p class="r-desc" id="rDesc"></p>
+      <div class="aya-q">
+        <div class="aya-q-lbl">// Prometheus, en La Red</div>
+        <p id="aQ"></p>
+        <cite id="aC"></cite>
+      </div>
+      <div class="social-links">
+        <a href="https://www.tiktok.com/@elcodigodeaya" target="_blank" rel="noopener" class="social-btn social-tiktok">
+          <span class="social-ico">&#127911;</span>Sigueme en TikTok @elcodigodeaya
+        </a>
+        <a href="https://www.youtube.com/@elcodigodeaya_BS" target="_blank" rel="noopener" class="social-btn social-youtube">
+          <span class="social-ico">&#9654;</span>YouTube @elcodigodeaya_BS
+        </a>
+        <a href="https://www.instagram.com/elcodigodeaya/" target="_blank" rel="noopener" class="social-btn social-instagram">
+          <span class="social-ico">&#128247;</span>Instagram @elcodigodeaya
+        </a>
+      </div>
+      <div class="libro-box">
+        <div class="libro-lbl">// El Codigo de Aya — Blanca Suarez Alvarez</div>
+        <p class="libro-txt" id="libroTxt"></p>
+        <a href="https://amzn.eu/d/09SzyP6j" target="_blank" rel="noopener" class="cta-am">&#128214; Ver El Codigo de Aya en Amazon</a>
+      </div>
+      <div class="share-box">
+        <div class="share-lbl">// Comparte tu resultado</div>
+        <div class="share-preview" id="sharePreview"></div>
+        <button class="share-btn" id="shareBtn">&#8594; COMPARTIR MI RESULTADO</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="restart-btn" id="restartBtn">&#8635; Repetir analisis</button>
+    </div>
+  </div>
+  <div class="footer"><p>EL CODIGO DE AYA &middot; &copy; 2025 BLANCA SUAREZ ALVAREZ</p></div>
+</div>
+<script>
+(function(){
+var AMAZON_URL="https://amzn.eu/d/09SzyP6j";
+var TIKTOK_URL="https://www.tiktok.com/@elcodigodeaya";
+var YOUTUBE_URL="https://www.youtube.com/@elcodigodeaya_BS";
+var INSTAGRAM_URL="https://www.instagram.com/elcodigodeaya/";
+
+var questions=[
+  {t:"Con que frecuencia compras productos que 'justo aparecieron' en tu feed?",
+   o:["Muy frecuentemente, es casi inquietante","A menudo, mas de lo que me gustaria admitir","Ocasionalmente, pero no es la norma","Rara vez o nunca, ignoro las recomendaciones"],
+   s:[4,3,2,1]},
+  {t:"Cuantas veces al dia revisas tus redes sociales sin un proposito especifico?",
+   o:["Mas de 20 veces, es automatico","Entre 10-20 veces al dia","Entre 5-10 veces al dia","Menos de 5 veces, uso consciente"],
+   s:[4,3,2,1]},
+  {t:"Cuando buscas algo en Google, cuantas veces haces clic en el primer resultado sin revisar otros?",
+   o:["Casi siempre, confio en el ranking","Frecuentemente, si parece relevante","A veces, depende de la busqueda","Rara vez, siempre contrasto varias fuentes"],
+   s:[4,3,2,1]},
+  {t:"Utilizas las mismas contrasenas o patrones similares en multiples plataformas?",
+   o:["Si, la misma o muy parecidas en todas","Si, pero con pequenas variaciones","Algunas unicas, otras repetidas","No, uso contrasenas unicas y gestor de contrasenas"],
+   s:[4,3,2,1]},
+  {t:"Lees las politicas de privacidad antes de aceptar cookies o crear una cuenta?",
+   o:["Nunca, acepto sin leer","A veces miro por encima","Depende de la plataforma","Siempre, o uso herramientas de privacidad"],
+   s:[4,3,2,1]}
+];
+
+var RESULTS=[
+  {max:8,emoji:"🟢",
+   title:"Eres difícil\nde predecir",
+   pct:15,
+   desc:"Tu comportamiento digital es heterodoxo. Los algoritmos te cuestan mas dinero en procesamiento que en conversion. Eres el tipo de usuario que los equipos de datos llaman 'ruido estadistico'. En el mundo de Prometheus, seras el primero en detectar la manipulacion.",
+   quote:"Habia algo en el que el sistema no terminaba de entender. No era error del sistema. Era el.",
+   cite:"El Codigo de Aya, Capitulo 3",
+   libro:"Markus empieza siendo exactamente esto: alguien que Prometheus no puede catalogar del todo. Esa resistencia inicial es lo que lo convierte en una amenaza para La Red."},
+  {max:12,emoji:"🟡",
+   title:"Parcialmente\npredecible",
+   pct:45,
+   desc:"Los algoritmos te leen bien en algunos contextos pero te pierden en otros. Eres consciente de algunos patrones pero sigues actuando en automatico en areas especificas. Estas en la zona mas interesante: suficientemente predecible para ser rentable, suficientemente erratico para que no lo notes.",
+   quote:"El sistema no necesita predecirte siempre. Solo necesita predecirte lo suficiente.",
+   cite:"Prometheus, en El Codigo de Aya",
+   libro:"Esta tension entre consciencia y automatismo es el motor de la saga. Aya navega La Red descubriendo que muchas decisiones que creia propias ya estaban calculadas antes de que ella llegara."},
+  {max:16,emoji:"🟠",
+   title:"Altamente\npredecible",
+   pct:78,
+   desc:"Tus patrones digitales son altamente consistentes y los algoritmos los explotan de forma eficiente. No es un fallo de caracter, es lo que le ocurre al 80% de los usuarios. El diseno de estas plataformas esta optimizado para esto. La pregunta es si ahora que lo sabes, cambia algo.",
+   quote:"No los esclavizamos. Les diseniamos un entorno donde la libertad y la obediencia se vuelven indistinguibles.",
+   cite:"Prometheus, en El Codigo de Aya",
+   libro:"En El Codigo de Aya, la mayoria de habitantes de La Red operan en este modo: ejecutando decisiones que creyeron propias y que en realidad fueron optimizadas por el sistema. La diferencia entre Aya y los demas es que ella empieza a verlo."},
+  {max:20,emoji:"🔴",
+   title:"El algoritmo\nte conoce mejor que tú",
+   pct:97,
+   desc:"Tus decisiones digitales son extraordinariamente predecibles. Amazon, TikTok y Google construyen un modelo de tu mente con precision clinica. No es tu culpa: el diseno de estos sistemas ha invertido miles de millones para conseguir exactamente esto. El primer paso es lo que acabas de hacer: verlo.",
+   quote:"El saber que te observan no te hace libre. Pero es el principio de todo.",
+   cite:"Aya, El Codigo de Aya: Convergencia",
+   libro:"Esta frase es el eje de Convergencia. Ver el codigo que te mueve es ya el primer acto de reescritura. Si llegaste aqui con un porcentaje alto, no es un diagnostico. Es un punto de partida. El mismo que tiene Markus al principio de la historia."}
+];
+
+var cur=0,total=0,sel=null,lastPct=0,lastTitle="",lastEmoji="";
+
+function startScan(){
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("qScreen").classList.remove("hidden");
+  showQ(0);
+}
+
+function showQ(i){
+  var q=questions[i];
+  document.getElementById("qNum").textContent="PREGUNTA "+(i+1)+" / "+questions.length;
+  document.getElementById("qTxt").textContent=q.t;
+  var c=document.getElementById("opts");
+  c.innerHTML="";
+  for(var j=0;j<q.o.length;j++){
+    (function(idx,score){
+      var b=document.createElement("button");
+      b.className="opt";
+      b.textContent=q.o[idx];
+      b.onclick=function(){pick(score,b);};
+      c.appendChild(b);
+    })(j,q.s[j]);
+  }
+  document.getElementById("nextBtn").classList.add("hidden");
+  sel=null;
+  document.getElementById("pf").style.width=Math.round((i/questions.length)*100)+"%";
+  document.getElementById("pt").textContent="PREGUNTA "+(i+1)+" / "+questions.length;
+  var card=document.getElementById("qCard");
+  card.style.animation="none";
+  setTimeout(function(){card.style.animation="fi 0.5s ease";},10);
+}
+
+function pick(score,btn){
+  var btns=document.querySelectorAll(".opt");
+  for(var i=0;i<btns.length;i++){btns[i].classList.remove("sel");}
+  btn.classList.add("sel");
+  sel=score;
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function nextQ(){
+  if(sel===null)return;
+  total+=sel;cur++;
+  if(cur<questions.length){showQ(cur);}else{showResult();}
+}
+
+function buildShareText(){
+  return lastEmoji+" Mi nivel de predecibilidad algoritmica: "+lastPct+"%\n"
+    +lastTitle+"\n\n"
+    +"Haz el test gratis:\n"
+    +"TikTok: "+TIKTOK_URL+"\n"
+    +"YouTube: "+YOUTUBE_URL+"\n"
+    +"Instagram: "+INSTAGRAM_URL+"\n\n"
+    +"El Codigo de Aya — Blanca Suarez Alvarez\n"
+    +AMAZON_URL;
+}
+
+function showResult(){
+  document.getElementById("qScreen").classList.add("hidden");
+  document.getElementById("pf").style.width="100%";
+  document.getElementById("pt").textContent="ANALISIS COMPLETADO";
+  document.getElementById("rScreen").classList.remove("hidden");
+  var r=RESULTS[RESULTS.length-1];
+  for(var i=0;i<RESULTS.length;i++){if(total<=RESULTS[i].max){r=RESULTS[i];break;}}
+  lastPct=r.pct;
+  lastTitle=r.title.replace(/\n/g," ");
+  lastEmoji=r.emoji;
+  document.getElementById("rIco").textContent=r.emoji;
+  document.getElementById("rTitle").textContent=r.title;
+  document.getElementById("rPct").textContent=r.pct+"%";
+  document.getElementById("rDesc").textContent=r.desc;
+  document.getElementById("aQ").textContent=r.quote;
+  document.getElementById("aC").textContent="— "+r.cite;
+  document.getElementById("libroTxt").textContent=r.libro;
+  setTimeout(function(){document.getElementById("ab").style.width=r.pct+"%";},300);
+  var prev=document.getElementById("sharePreview");
+  if(prev){prev.textContent=buildShareText();}
+}
+
+function shareResult(){
+  var txt=buildShareText();
+  if(navigator.share){
+    navigator.share({title:"¿Eres predecible para los algoritmos? — El Codigo de Aya",text:txt}).catch(function(){copyText(txt);});
+  }else{copyText(txt);}
+}
+
+function copyText(txt){
+  var btn=document.getElementById("shareBtn");
+  var orig=btn.textContent;
+  function done(){
+    btn.textContent="COPIADO — PEGA EN TUS STORIES";
+    btn.style.background="var(--gold)";
+    setTimeout(function(){btn.textContent=orig;btn.style.background="var(--g)";},3500);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(function(){legacyCopy(txt,done);});
+  }else{legacyCopy(txt,done);}
+}
+
+function legacyCopy(txt,cb){
+  var ta=document.createElement("textarea");
+  ta.value=txt;
+  ta.style.cssText="position:fixed;opacity:0;top:0;left:0;width:1px;height:1px";
+  document.body.appendChild(ta);
+  ta.focus();ta.select();
+  try{document.execCommand("copy");}catch(e){}
+  document.body.removeChild(ta);
+  if(cb)cb();
+}
+
+function restart(){
+  cur=0;total=0;sel=null;lastPct=0;lastTitle="";lastEmoji="";
+  document.getElementById("rScreen").classList.add("hidden");
+  document.getElementById("qScreen").classList.remove("hidden");
+  document.getElementById("pf").style.width="0%";
+  showQ(0);
+}
+
+(function(){
+  var c=document.getElementById("pts");
+  var cols=["#C8A84B","#4AE54A","#00AAFF"];
+  for(var i=0;i<35;i++){
+    var p=document.createElement("div");
+    p.className="pt";
+    var sz=(1+Math.random()*2)+"px";
+    p.style.cssText="left:"+(Math.random()*100)+"%;width:"+sz+";height:"+sz+";background:"+cols[Math.floor(Math.random()*3)]+";animation-duration:"+(4+Math.random()*8)+"s;animation-delay:"+(Math.random()*8)+"s";
+    c.appendChild(p);
+  }
+})();
+
+document.getElementById("startBtn").addEventListener("click",startScan);
+document.getElementById("nextBtn").addEventListener("click",nextQ);
+document.getElementById("shareBtn").addEventListener("click",shareResult);
+document.getElementById("restartBtn").addEventListener("click",restart);
+})();
+</script>
+</body>
+</html>
