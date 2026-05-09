@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4AE54A;--g2:#B8FF00;--b:#00AAFF;--gold:#C8A84B;--dk:#050A1A;--w:#F0EEE8;--mu:#8A9BB0}
+html,body{min-height:100vh;background:linear-gradient(135deg,#050A1A 0%,#0A1428 100%);color:var(--w);font-family:'Raleway',sans-serif;overflow-x:hidden}
+#pts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:fall linear infinite}
+@keyframes fall{0%{opacity:0;transform:translateY(-10px)}10%{opacity:1}90%{opacity:.3}100%{opacity:0;transform:translateY(100vh)}}
+.wrap{position:relative;z-index:2;max-width:660px;margin:0 auto;padding:36px 20px 80px}
+.brand{text-align:center;margin-bottom:44px}
+.b-tag{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:.8}
+.b-title{font-family:'Orbitron',monospace;font-size:clamp(17px,4.5vw,26px);font-weight:900;line-height:1.15;margin-bottom:8px;text-shadow:0 0 40px rgba(74,229,74,.4)}
+.b-title span{color:var(--g)}
+.b-sub{font-size:13px;color:var(--mu);font-weight:300}
+.b-line{width:60px;height:2px;background:linear-gradient(90deg,var(--g),var(--gold));margin:18px auto 0;box-shadow:0 0 12px rgba(74,229,74,.5)}
+.intro{background:rgba(0,170,255,.06);border:1px solid rgba(0,170,255,.2);border-radius:8px;padding:22px;margin-bottom:32px;position:relative;overflow:hidden}
+.intro::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--b);box-shadow:0 0 10px var(--b)}
+.i-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--b);margin-bottom:8px}
+.intro p{font-size:13.5px;line-height:1.75;color:#C8D8E8;font-weight:300;margin-bottom:8px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--w);font-weight:600}
+.pb{background:rgba(255,255,255,.06);border-radius:4px;height:4px;margin-bottom:8px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--g),var(--gold));border-radius:4px;transition:width .6s ease;box-shadow:0 0 10px rgba(74,229,74,.5)}
+.pt-txt{font-family:'Orbitron',monospace;font-size:8px;color:var(--mu);letter-spacing:2px;text-align:right;margin-bottom:28px}
+.card{background:rgba(5,10,26,.88);border:1px solid rgba(74,229,74,.2);border-radius:12px;padding:28px;margin-bottom:18px;backdrop-filter:blur(10px);animation:fi .5s ease}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--g);margin-bottom:12px}
+.q-txt{font-size:clamp(14px,3vw,18px);font-weight:600;line-height:1.45;color:var(--w);margin-bottom:24px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Raleway',sans-serif;font-size:13px;color:#C0D0E0;line-height:1.4;position:relative;overflow:hidden;transition:all .2s ease;width:100%}
+.opt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);transform:scaleY(0);transition:transform .2s}
+.opt:hover{border-color:rgba(74,229,74,.4);background:rgba(74,229,74,.06);color:var(--w);transform:translateX(3px)}
+.opt:hover::before,.opt.sel::before{transform:scaleY(1)}
+.opt.sel{border-color:var(--g);background:rgba(74,229,74,.1);color:var(--w)}
+.next-btn{background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:11px 20px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;margin-top:16px;width:100%}
+.next-btn:hover{border-color:var(--g);color:var(--g)}
+.r-card{background:rgba(5,10,26,.93);border:1px solid rgba(200,168,75,.35);border-radius:12px;padding:36px 24px;text-align:center;backdrop-filter:blur(12px);animation:fi .7s ease}
+.r-ico{font-size:44px;margin-bottom:14px}
+.r-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);margin-bottom:10px}
+.r-title{font-family:'Orbitron',monospace;font-size:clamp(14px,3.5vw,20px);font-weight:900;line-height:1.25;margin-bottom:18px;color:var(--w);white-space:pre-line}
+.r-pct{font-family:'Orbitron',monospace;font-size:clamp(38px,8vw,58px);font-weight:900;color:var(--g);text-shadow:0 0 28px rgba(74,229,74,.6);line-height:1;margin-bottom:6px}
+.r-pct-lbl{font-size:10px;color:var(--mu);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+.r-desc{font-size:13.5px;line-height:1.75;color:#C0D0E0;font-weight:300;max-width:500px;margin:0 auto 24px;text-align:left}
+.ab-wrap{background:rgba(255,255,255,.06);border-radius:6px;height:7px;margin:14px 0 5px;overflow:hidden}
+.ab{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g),var(--gold));box-shadow:0 0 10px rgba(74,229,74,.5);transition:width 1.2s ease}
+.ab-lbls{display:flex;justify-content:space-between;font-size:8px;color:var(--mu);letter-spacing:1px;margin-bottom:28px}
+.aya-q{background:rgba(74,229,74,.06);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:16px 18px;margin:20px 0;text-align:left}
+.aya-q-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:7px}
+.aya-q p{font-style:italic;font-size:13.5px;line-height:1.7;color:#C8D8C8}
+.aya-q cite{display:block;font-size:10px;color:var(--mu);margin-top:7px;font-style:normal;letter-spacing:1px}
+.libro-box{background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.25);border-radius:10px;padding:20px;margin:20px 0;text-align:left}
+.libro-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+.libro-txt{font-size:13px;line-height:1.7;color:#C8C0A0;font-weight:300;margin-bottom:14px}
+.cta-am{display:block;border:1px solid rgba(200,168,75,.5);color:var(--gold);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:14px 20px;border-radius:7px;text-decoration:none;cursor:pointer;transition:all .25s;background:rgba(200,168,75,.08)}
+.cta-am:hover{background:rgba(200,168,75,.18);border-color:var(--gold);color:#FFD700}
+.social-links{display:flex;flex-direction:column;gap:8px;margin:20px 0}
+.social-btn{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:8px;text-decoration:none;font-family:'Raleway',sans-serif;font-size:13px;font-weight:600;transition:all .2s;border:1px solid transparent;cursor:pointer}
+.social-tiktok{background:rgba(0,0,0,.4);border-color:rgba(255,255,255,.15);color:var(--w)}
+.social-tiktok:hover{background:rgba(255,255,255,.08);border-color:var(--w)}
+.social-youtube{background:rgba(255,0,0,.1);border-color:rgba(255,0,0,.3);color:#FF6B6B}
+.social-youtube:hover{background:rgba(255,0,0,.18);border-color:#FF4444}
+.social-instagram{background:rgba(200,100,200,.1);border-color:rgba(200,100,200,.3);color:#E0A0E0}
+.social-instagram:hover{background:rgba(200,100,200,.18);border-color:#CC88CC}
+.social-ico{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.share-box{background:rgba(74,229,74,.05);border:1px solid rgba(74,229,74,.15);border-radius:10px;padding:20px;margin-top:20px;text-align:center}
+.share-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:8px}
+.share-preview{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px;margin-bottom:14px;text-align:left;font-size:11.5px;line-height:1.7;color:#9AB8A0;white-space:pre-line;font-family:'Raleway',sans-serif;word-break:break-word}
+.share-btn{background:var(--g);color:#050A1A;border:none;border-radius:7px;padding:13px 24px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;width:100%;display:block}
+.share-btn:hover{background:var(--g2);transform:translateY(-2px)}
+.restart-btn{background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 24px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;margin-top:16px;display:inline-block}
+.restart-btn:hover{border-color:var(--g);color:var(--g)}
+.start-btn{display:block;background:var(--g);color:#050A1A;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:15px 24px;border-radius:8px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 0 20px rgba(74,229,74,.3);width:100%}
+.start-btn:hover{background:var(--g2);box-shadow:0 0 30px rgba(74,229,74,.5);transform:translateY(-2px)}
+.hidden{display:none!important}
+.footer{text-align:center;margin-top:56px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.footer p{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:rgba(200,168,75,.35)}
+@media(max-width:480px){.wrap{padding:20px 14px 60px}.card,.r-card{padding:20px 16px}}
+</style>
+</head>
+<body>
+<div id="pts"></div>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="b-tag">El Codigo de Aya</div>
+    <h1 class="b-title">El <span>Buffer</span> de las<br>Vidas en Pausa</h1>
+    <p class="b-sub">Cuantas promesas rotas llevas ejecutandose en segundo plano</p>
+    <div class="b-line"></div>
+  </div>
+
+  <div class="intro">
+    <div class="i-lbl">// Dato cientifico real</div>
+    <p>La neurociencia cognitiva llama <strong>efecto Zeigarnik</strong> al fenomeno por el que el cerebro sigue procesando las tareas incompletas aunque no seas consciente de ello. Cada promesa rota, cada conversacion pendiente, cada proyecto en pausa ocupa espacio en tu memoria de trabajo.</p>
+    <p><strong>En El Codigo de Aya, el buffer es la metafora central:</strong> lo que no se ejecuta no desaparece. Se acumula. Y el sistema lo usa contra ti.</p>
+  </div>
+
+  <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
+  <div class="pt-txt" id="pt">PREGUNTA 0 / 7</div>
+
+  <!-- PANTALLA INICIO -->
+  <div id="startScreen">
+    <div class="card" style="text-align:center;padding:44px 24px">
+      <div style="font-size:40px;margin-bottom:18px">&#x23F3;</div>
+      <div class="q-num">SISTEMA LISTO</div>
+      <div class="q-txt" style="text-align:center">7 preguntas.<br>Sin trampa. Sin filtro.</div>
+      <p style="font-size:12px;color:var(--mu);margin-bottom:26px">Lo que no dices aqui, tu cerebro ya lo sabe.</p>
+      <button class="start-btn" id="startBtn">&#8594; MEDIR MI BUFFER</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA PREGUNTAS -->
+  <div id="qScreen" class="hidden">
+    <div class="card" id="qCard">
+      <div class="q-num" id="qNum"></div>
+      <div class="q-txt" id="qTxt"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <button class="next-btn hidden" id="nextBtn">Siguiente &#8594;</button>
+  </div>
+
+  <!-- PANTALLA RESULTADO -->
+  <div id="rScreen" class="hidden">
+    <div class="r-card">
+      <div class="r-ico" id="rIco"></div>
+      <div class="r-lbl">// Diagnostico completado</div>
+      <div class="r-title" id="rTitle"></div>
+      <div class="r-pct" id="rPct"></div>
+      <div class="r-pct-lbl">de capacidad cognitiva en procesos en segundo plano</div>
+      <div class="ab-wrap"><div class="ab" id="ab" style="width:0%"></div></div>
+      <div class="ab-lbls"><span>BUFFER LIMPIO</span><span>BUFFER AL LIMITE</span></div>
+      <p class="r-desc" id="rDesc"></p>
+      <div class="aya-q">
+        <div class="aya-q-lbl">// El Codigo de Aya</div>
+        <p id="aQ"></p>
+        <cite id="aC"></cite>
+      </div>
+      <div class="social-links">
+        <a href="https://www.tiktok.com/@elcodigodeaya" target="_blank" rel="noopener" class="social-btn social-tiktok">
+          <span class="social-ico">&#127911;</span>TikTok @elcodigodeaya
+        </a>
+        <a href="https://www.youtube.com/@elcodigodeaya_BS" target="_blank" rel="noopener" class="social-btn social-youtube">
+          <span class="social-ico">&#9654;</span>YouTube @elcodigodeaya_BS
+        </a>
+        <a href="https://www.instagram.com/elcodigodeaya/" target="_blank" rel="noopener" class="social-btn social-instagram">
+          <span class="social-ico">&#128247;</span>Instagram @elcodigodeaya
+        </a>
+      </div>
+      <div class="libro-box">
+        <div class="libro-lbl">// El Codigo de Aya — Blanca Suarez Alvarez</div>
+        <p class="libro-txt" id="libroTxt"></p>
+        <a href="https://amzn.eu/d/09SzyP6j" target="_blank" rel="noopener" class="cta-am">&#128214; Ver El Codigo de Aya en Amazon</a>
+      </div>
+      <div class="share-box">
+        <div class="share-lbl">// Comparte tu resultado</div>
+        <div class="share-preview" id="sharePreview"></div>
+        <button class="share-btn" id="shareBtn">&#8594; COMPARTIR MI RESULTADO</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="restart-btn" id="restartBtn">&#8635; Repetir diagnostico</button>
+    </div>
+  </div>
+
+  <div class="footer"><p>EL CODIGO DE AYA &middot; &copy; 2025 BLANCA SUAREZ ALVAREZ</p></div>
+</div>
+
+<script>
+(function(){
+
+  var AMAZON_URL  = "https://amzn.eu/d/09SzyP6j";
+  var TIKTOK_URL  = "https://www.tiktok.com/@elcodigodeaya";
+  var YOUTUBE_URL = "https://www.youtube.com/@elcodigodeaya_BS";
+  var INSTAGRAM_URL = "https://www.instagram.com/elcodigodeaya/";
+
+  /* ---------- PREGUNTAS (7) — scores 1-4, min=7 max=28 ---------- */
+  var QS = [
+    { t: "Cuando piensas en llamar a esa persona importante, que suele pasar?",
+      o: ["Lo hago en ese momento, sin excusas",
+          "Lo anoto y lo hago en las proximas horas",
+          "Pasan dias antes de que encuentre el momento",
+          "Llevo meses o anos pensandolo sin hacerlo"],
+      s: [1,2,3,4] },
+    { t: "Cuantos proyectos personales tienes en pausa ahora mismo?",
+      o: ["Ninguno. Si empiezo algo, lo termino o lo cierro conscientemente",
+          "Uno o dos, pero con fecha clara de retorno",
+          "Entre tres y cinco, sin agenda definida",
+          "He perdido la cuenta. Demasiados para recordar"],
+      s: [1,2,3,4] },
+    { t: "Cuando algo te molesta en una relacion cercana, cuanto tardas en hablarlo?",
+      o: ["En el momento o muy pronto despues",
+          "Espero unos dias para procesarlo, pero lo hablo",
+          "Semanas o meses. Hasta que explota",
+          "Nunca lo hablo. Se queda guardado para siempre"],
+      s: [1,2,3,4] },
+    { t: "Con que frecuencia dices manana empiezo con algo que sabes que es importante?",
+      o: ["Casi nunca. Si es importante, empiezo hoy",
+          "A veces lo postergo un dia, pero arranco rapido",
+          "Con frecuencia. Manana es mi palabra favorita",
+          "Siempre. Llevo anos diciendolo"],
+      s: [1,2,3,4] },
+    { t: "Si tuvieras que pedir perdon por algo que hiciste hace tiempo, que harias?",
+      o: ["Ya lo habria hecho. No dejo esas cosas pendientes",
+          "Busco el momento adecuado, pero lo hago",
+          "Lo pienso mucho, pero me cuesta dar el paso",
+          "Es demasiado tarde. Ya no tiene sentido"],
+      s: [1,2,3,4] },
+    { t: "Cuantas veces has dicho tengo que cuidarme mas sin que cambie nada despues?",
+      o: ["Pocas. Cuando lo digo, actuo",
+          "Algunas veces, pero termino retomandolo",
+          "Muchas. Es un ciclo que se repite",
+          "He perdido la cuenta. Ya ni lo intento"],
+      s: [1,2,3,4] },
+    { t: "Si tu vida fuera un ordenador, como describirias su estado ahora mismo?",
+      o: ["Funciona rapido. Pocas pestanas abiertas, todo ordenado",
+          "Alguna pestana de mas, pero rinde bien",
+          "Demasiadas pestanas. Va lento y a veces se cuelga",
+          "Esta a punto de colapsar. Necesita reiniciarse"],
+      s: [1,2,3,4] }
+  ];
+
+  /* ---------- RESULTADOS — rangos para min=7 max=28 ----------
+     7-11 limpio | 12-16 moderado | 17-22 saturado | 23-28 limite */
+  var RS = [
+    { max:11, emoji:"🟢",
+      title:"Buffer limpio.\nProcesas lo que vives.",
+      pct:12,
+      desc:"Tu cerebro no acumula deuda emocional sin pagar. Cuando algo queda pendiente, lo cierras o lo decides conscientemente. Este nivel de gestion cognitiva es poco comun y requiere una capacidad de accion inmediata que la mayoria no tiene. El coste: a veces actuas antes de procesar del todo.",
+      quote:"Habia personas que dejaban el pasado atras de verdad. No porque no les importara, sino porque habian aprendido a cerrarlo.",
+      cite:"El Codigo de Aya, Capitulo 4",
+      libro:"En la saga, Aya empieza con un buffer casi vacio. Es lo que le permite ver con claridad lo que los demas no pueden. Pero La Red sabe que un buffer limpio tambien es una debilidad: no tienes ruido que te distraiga, pero tampoco amortiguacion cuando el sistema ataca." },
+    { max:16, emoji:"🟡",
+      title:"Buffer moderado.\nAlgo se acumula.",
+      pct:38,
+      desc:"Gestionas la mayoria de lo importante, pero hay cosas que dejas en segundo plano mas tiempo del que deberian estar. El efecto Zeigarnik ya actua sobre ti: esos procesos incompletos consumen recursos cognitivos que podrias usar en otra parte. La buena noticia: todavia tienes margen.",
+      quote:"Lo que no se dice no desaparece. Se convierte en ruido de fondo. Y el ruido de fondo cansa igual que el sonido.",
+      cite:"Aya, en La Red — El Codigo de Aya",
+      libro:"La mayoria de los personajes secundarios de la saga operan en este nivel. Lo suficientemente funcionales para no colapsar, lo suficientemente cargados para no ser libres del todo. Aya los llama los que viven en modo buffer." },
+    { max:22, emoji:"🟠",
+      title:"Buffer saturado.\nEl sistema ya te pesa.",
+      pct:68,
+      desc:"Llevas una carga cognitiva importante. Conversaciones sin cerrar, proyectos sin terminar, decisiones aplazadas. Tu cerebro los procesa en paralelo aunque no lo notes, y ese coste se traduce en fatiga, dificultad para concentrarse y sensacion de que nunca hay suficiente tiempo. No es falta de tiempo. Es falta de cierre.",
+      quote:"El problema no era lo que habia pasado. Era todo lo que estaba pasando todavia, sin que nadie lo hubiera decidido.",
+      cite:"El Codigo de Aya: Convergencia, Capitulo 2",
+      libro:"Markus llega al inicio de la historia con un buffer en este nivel. Cree que es agotamiento. Cree que necesita vacaciones. Prometheus sabe que no. Sabe que lo que Markus necesita es cerrar lo que lleva anos abierto. Y eso es exactamente lo que le impide ver lo que esta pasando." },
+    { max:28, emoji:"🔴",
+      title:"Buffer al limite.\nDemasiados procesos abiertos.",
+      pct:91,
+      desc:"Tu sistema cognitivo lleva demasiado tiempo funcionando con mas procesos activos de los que puede gestionar bien. No es debilidad: es el resultado acumulado de no haber tenido el tiempo, el espacio o las herramientas para cerrar lo que quedo abierto. El primer paso no es actuar. Es reconocer cuanto pesa.",
+      quote:"Cuando el buffer se llena, el sistema no colapsa de golpe. Va lento. Va torpe. Va con la sensacion constante de que algo falta. Y nadie sabe exactamente que.",
+      cite:"Prometheus, en El Codigo de Aya",
+      libro:"Este es el estado en el que vive la mayoria de los habitantes de La Red sin saberlo. Prometheus lo disenio asi. Un buffer saturado es un usuario predecible: no tiene energia para cuestionarse, no tiene espacio para rebelarse. Ver esto es el primer acto de ruptura con el sistema." }
+  ];
+
+  /* ---------- ESTADO ---------- */
+  var cur = 0, total = 0, sel = null;
+  var lastPct = 0, lastTitle = "", lastEmoji = "";
+
+  /* ---------- REFS ---------- */
+  var elStart   = document.getElementById("startScreen");
+  var elQ       = document.getElementById("qScreen");
+  var elR       = document.getElementById("rScreen");
+  var elPf      = document.getElementById("pf");
+  var elPt      = document.getElementById("pt");
+  var elQCard   = document.getElementById("qCard");
+  var elQNum    = document.getElementById("qNum");
+  var elQTxt    = document.getElementById("qTxt");
+  var elOpts    = document.getElementById("opts");
+  var elNext    = document.getElementById("nextBtn");
+  var elAb      = document.getElementById("ab");
+  var startBtn  = document.getElementById("startBtn");
+  var nextBtn2  = document.getElementById("nextBtn");
+  var shareBtn  = document.getElementById("shareBtn");
+  var restartBtn= document.getElementById("restartBtn");
+
+  /* ---------- HELPERS ---------- */
+  function show(el){ el.classList.remove("hidden"); }
+  function hide(el){ el.classList.add("hidden"); }
+
+  function setProgress(i, total){
+    var pct = Math.round((i / total) * 100);
+    elPf.style.width = pct + "%";
+    elPt.textContent = "PREGUNTA " + (i + 1) + " / " + total;
+  }
+
+  /* ---------- INICIO ---------- */
+  function startScan(){
+    cur = 0; total = 0; sel = null;
+    hide(elStart);
+    show(elQ);
+    showQ(0);
+  }
+
+  /* ---------- MOSTRAR PREGUNTA ---------- */
+  function showQ(i){
+    var q = QS[i];
+    setProgress(i, QS.length);
+    elQNum.textContent = "PREGUNTA " + (i + 1) + " / " + QS.length;
+    elQTxt.textContent = q.t;
+    elOpts.innerHTML = "";
+    q.o.forEach(function(txt, idx){
+      var btn = document.createElement("button");
+      btn.className = "opt";
+      btn.textContent = txt;
+      btn.addEventListener("click", function(){ pickOpt(q.s[idx], btn); });
+      elOpts.appendChild(btn);
+    });
+    sel = null;
+    hide(elNext);
+    elQCard.style.animation = "none";
+    setTimeout(function(){ elQCard.style.animation = "fi .5s ease"; }, 10);
+  }
+
+  /* ---------- SELECCIONAR OPCION ---------- */
+  function pickOpt(score, btn){
+    Array.prototype.forEach.call(elOpts.querySelectorAll(".opt"), function(b){
+      b.classList.remove("sel");
+    });
+    btn.classList.add("sel");
+    sel = score;
+    show(elNext);
+  }
+
+  /* ---------- SIGUIENTE ---------- */
+  function goNext(){
+    if(sel === null) return;
+    total += sel;
+    cur++;
+    if(cur < QS.length){
+      showQ(cur);
+    } else {
+      showResult();
+    }
+  }
+
+  /* ---------- MOSTRAR RESULTADO ---------- */
+  function showResult(){
+    hide(elQ);
+    elPf.style.width = "100%";
+    elPt.textContent = "DIAGNOSTICO COMPLETADO";
+    show(elR);
+
+    var r = RS[RS.length - 1];
+    for(var i = 0; i < RS.length; i++){
+      if(total <= RS[i].max){ r = RS[i]; break; }
+    }
+
+    lastPct   = r.pct;
+    lastTitle = r.title.replace(/\n/g, " ");
+    lastEmoji = r.emoji;
+
+    document.getElementById("rIco").textContent    = r.emoji;
+    document.getElementById("rTitle").textContent  = r.title;
+    document.getElementById("rPct").textContent    = r.pct + "%";
+    document.getElementById("rDesc").textContent   = r.desc;
+    document.getElementById("aQ").textContent      = r.quote;
+    document.getElementById("aC").textContent      = "— " + r.cite;
+    document.getElementById("libroTxt").textContent = r.libro;
+    document.getElementById("sharePreview").textContent = buildShareText(r);
+
+    setTimeout(function(){ elAb.style.width = r.pct + "%"; }, 300);
+  }
+
+  /* ---------- TEXTO COMPARTIR ---------- */
+  function buildShareText(r){
+    return (r ? r.emoji : lastEmoji) + " Mi buffer de vidas en pausa: " + (r ? r.pct : lastPct) + "%\n"
+      + (r ? r.title.replace(/\n/g," ") : lastTitle) + "\n\n"
+      + "Mide el tuyo:\n"
+      + "TikTok: " + TIKTOK_URL + "\n"
+      + "YouTube: " + YOUTUBE_URL + "\n"
+      + "Instagram: " + INSTAGRAM_URL + "\n\n"
+      + "El Codigo de Aya — Blanca Suarez Alvarez\n"
+      + AMAZON_URL;
+  }
+
+  /* ---------- COMPARTIR ---------- */
+  function doShare(){
+    var txt = document.getElementById("sharePreview").textContent || buildShareText(null);
+    if(navigator.share){
+      navigator.share({ title:"El Buffer de las Vidas en Pausa — El Codigo de Aya", text: txt })
+        .catch(function(){ copyToClipboard(txt); });
+    } else {
+      copyToClipboard(txt);
+    }
+  }
+
+  function copyToClipboard(txt){
+    var btn = shareBtn;
+    var orig = btn.textContent;
+    function done(){
+      btn.textContent = "COPIADO — PEGA EN TUS STORIES";
+      btn.style.background = "var(--gold)";
+      setTimeout(function(){ btn.textContent = orig; btn.style.background = "var(--g)"; }, 3500);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(done).catch(function(){ legacyCopy(txt, done); });
+    } else {
+      legacyCopy(txt, done);
+    }
+  }
+
+  function legacyCopy(txt, cb){
+    var ta = document.createElement("textarea");
+    ta.value = txt;
+    ta.style.cssText = "position:fixed;opacity:0;top:0;left:0;width:1px;height:1px";
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try{ document.execCommand("copy"); } catch(e){}
+    document.body.removeChild(ta);
+    if(cb) cb();
+  }
+
+  /* ---------- REINICIAR ---------- */
+  function doRestart(){
+    cur = 0; total = 0; sel = null; lastPct = 0; lastTitle = ""; lastEmoji = "";
+    hide(elR);
+    elAb.style.width = "0%";
+    elPf.style.width = "0%";
+    show(elQ);
+    showQ(0);
+  }
+
+  /* ---------- PARTICULAS ---------- */
+  (function(){
+    var c = document.getElementById("pts");
+    var cols = ["#C8A84B","#4AE54A","#00AAFF"];
+    for(var i = 0; i < 35; i++){
+      var p = document.createElement("div");
+      p.className = "pt";
+      var sz = (1 + Math.random() * 2) + "px";
+      p.style.cssText = "left:" + (Math.random()*100) + "%;width:" + sz + ";height:" + sz
+        + ";background:" + cols[Math.floor(Math.random()*3)]
+        + ";animation-duration:" + (4 + Math.random()*8) + "s"
+        + ";animation-delay:" + (Math.random()*8) + "s";
+      c.appendChild(p);
+    }
+  })();
+
+  /* ---------- EVENTOS ---------- */
+  startBtn.addEventListener("click",   startScan);
+  nextBtn2.addEventListener("click",   goNext);
+  shareBtn.addEventListener("click",   doShare);
+  restartBtn.addEventListener("click", doRestart);
+
+})();
+</script>
+</body>
+</html>
