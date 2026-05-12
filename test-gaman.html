@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Gaman — El Código de Aya</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4AE54A;--g2:#B8FF00;--b:#00AAFF;--gold:#C8A84B;--dk:#050A1A;--w:#F0EEE8;--mu:#8A9BB0}
+html,body{min-height:100vh;background:linear-gradient(135deg,#050A1A 0%,#0A1428 100%);color:var(--w);font-family:'Raleway',sans-serif;overflow-x:hidden}
+#pts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:fall linear infinite}
+@keyframes fall{0%{opacity:0;transform:translateY(-10px)}10%{opacity:1}90%{opacity:.3}100%{opacity:0;transform:translateY(100vh)}}
+.wrap{position:relative;z-index:2;max-width:660px;margin:0 auto;padding:36px 20px 80px}
+.brand{text-align:center;margin-bottom:44px}
+.b-tag{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:.8}
+.b-title{font-family:'Orbitron',monospace;font-size:clamp(17px,4.5vw,26px);font-weight:900;line-height:1.15;margin-bottom:8px;text-shadow:0 0 40px rgba(74,229,74,.4)}
+.b-title span{color:var(--g)}
+.b-sub{font-size:13px;color:var(--mu);font-weight:300}
+.b-line{width:60px;height:2px;background:linear-gradient(90deg,var(--g),var(--gold));margin:18px auto 0;box-shadow:0 0 12px rgba(74,229,74,.5)}
+.intro{background:rgba(0,170,255,.06);border:1px solid rgba(0,170,255,.2);border-radius:8px;padding:22px;margin-bottom:32px;position:relative;overflow:hidden}
+.intro::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--b);box-shadow:0 0 10px var(--b)}
+.i-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--b);margin-bottom:8px}
+.intro p{font-size:13.5px;line-height:1.75;color:#C8D8E8;font-weight:300;margin-bottom:8px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--w);font-weight:600}
+.pb{background:rgba(255,255,255,.06);border-radius:4px;height:4px;margin-bottom:8px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--g),var(--gold));border-radius:4px;transition:width .6s ease;box-shadow:0 0 10px rgba(74,229,74,.5)}
+.pt-txt{font-family:'Orbitron',monospace;font-size:8px;color:var(--mu);letter-spacing:2px;text-align:right;margin-bottom:28px}
+.card{background:rgba(5,10,26,.88);border:1px solid rgba(74,229,74,.2);border-radius:12px;padding:28px;margin-bottom:18px;backdrop-filter:blur(10px);animation:fi .5s ease}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--g);margin-bottom:12px}
+.q-txt{font-size:clamp(14px,3vw,18px);font-weight:600;line-height:1.45;color:var(--w);margin-bottom:24px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Raleway',sans-serif;font-size:13px;color:#C0D0E0;line-height:1.4;position:relative;overflow:hidden;transition:all .2s ease;width:100%}
+.opt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);transform:scaleY(0);transition:transform .2s}
+.opt:hover{border-color:rgba(74,229,74,.4);background:rgba(74,229,74,.06);color:var(--w);transform:translateX(3px)}
+.opt:hover::before,.opt.sel::before{transform:scaleY(1)}
+.opt.sel{border-color:var(--g);background:rgba(74,229,74,.1);color:var(--w)}
+.next-btn{background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:11px 20px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;margin-top:16px;width:100%}
+.next-btn:hover{border-color:var(--g);color:var(--g)}
+.r-card{background:rgba(5,10,26,.93);border:1px solid rgba(200,168,75,.35);border-radius:12px;padding:36px 24px;text-align:center;backdrop-filter:blur(12px);animation:fi .7s ease}
+.r-ico{font-size:44px;margin-bottom:14px}
+.r-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);margin-bottom:10px}
+.r-title{font-family:'Orbitron',monospace;font-size:clamp(14px,3.5vw,20px);font-weight:900;line-height:1.25;margin-bottom:18px;color:var(--w);white-space:pre-line}
+.r-pct{font-family:'Orbitron',monospace;font-size:clamp(38px,8vw,58px);font-weight:900;color:var(--g);text-shadow:0 0 28px rgba(74,229,74,.6);line-height:1;margin-bottom:6px}
+.r-pct-lbl{font-size:10px;color:var(--mu);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+.r-desc{font-size:13.5px;line-height:1.75;color:#C0D0E0;font-weight:300;max-width:500px;margin:0 auto 24px;text-align:left}
+.ab-wrap{background:rgba(255,255,255,.06);border-radius:6px;height:7px;margin:14px 0 5px;overflow:hidden}
+.ab{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g),var(--gold));box-shadow:0 0 10px rgba(74,229,74,.5);transition:width 1.2s ease}
+.ab-lbls{display:flex;justify-content:space-between;font-size:8px;color:var(--mu);letter-spacing:1px;margin-bottom:28px}
+.aya-q{background:rgba(74,229,74,.06);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:16px 18px;margin:20px 0;text-align:left}
+.aya-q-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:7px}
+.aya-q p{font-style:italic;font-size:13.5px;line-height:1.7;color:#C8D8C8}
+.aya-q cite{display:block;font-size:10px;color:var(--mu);margin-top:7px;font-style:normal;letter-spacing:1px}
+.libro-box{background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.25);border-radius:10px;padding:20px;margin:20px 0;text-align:left}
+.libro-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+.libro-txt{font-size:13px;line-height:1.7;color:#C8C0A0;font-weight:300;margin-bottom:14px}
+.cta-am{display:block;border:1px solid rgba(200,168,75,.5);color:var(--gold);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:14px 20px;border-radius:7px;text-decoration:none;cursor:pointer;transition:all .25s;background:rgba(200,168,75,.08)}
+.cta-am:hover{background:rgba(200,168,75,.18);border-color:var(--gold);color:#FFD700}
+.social-links{display:flex;flex-direction:column;gap:8px;margin:20px 0}
+.social-btn{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:8px;text-decoration:none;font-family:'Raleway',sans-serif;font-size:13px;font-weight:600;transition:all .2s;border:1px solid transparent;cursor:pointer}
+.social-tiktok{background:rgba(0,0,0,.4);border-color:rgba(255,255,255,.15);color:var(--w)}
+.social-tiktok:hover{background:rgba(255,255,255,.08);border-color:var(--w)}
+.social-youtube{background:rgba(255,0,0,.1);border-color:rgba(255,0,0,.3);color:#FF6B6B}
+.social-youtube:hover{background:rgba(255,0,0,.18);border-color:#FF4444}
+.social-instagram{background:rgba(200,100,200,.1);border-color:rgba(200,100,200,.3);color:#E0A0E0}
+.social-instagram:hover{background:rgba(200,100,200,.18);border-color:#CC88CC}
+.social-ico{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.share-box{background:rgba(74,229,74,.05);border:1px solid rgba(74,229,74,.15);border-radius:10px;padding:20px;margin-top:20px;text-align:center}
+.share-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:8px}
+.share-preview{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px;margin-bottom:14px;text-align:left;font-size:11.5px;line-height:1.7;color:#9AB8A0;white-space:pre-line;font-family:'Raleway',sans-serif;word-break:break-word}
+.share-btn{background:var(--g);color:#050A1A;border:none;border-radius:7px;padding:13px 24px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;width:100%;display:block}
+.share-btn:hover{background:var(--g2);transform:translateY(-2px)}
+.restart-btn{background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 24px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;margin-top:16px;display:inline-block}
+.restart-btn:hover{border-color:var(--g);color:var(--g)}
+.start-btn{display:block;background:var(--g);color:#050A1A;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:15px 24px;border-radius:8px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 0 20px rgba(74,229,74,.3);width:100%}
+.start-btn:hover{background:var(--g2);box-shadow:0 0 30px rgba(74,229,74,.5);transform:translateY(-2px)}
+.hidden{display:none!important}
+.footer{text-align:center;margin-top:56px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.footer p{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:rgba(200,168,75,.35)}
+@media(max-width:480px){.wrap{padding:20px 14px 60px}.card,.r-card{padding:20px 16px}}
+</style>
+</head>
+<body>
+<div id="pts"></div>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="b-tag">El Codigo de Aya &middot; Libro 1 &middot; Cap. 2</div>
+    <h1 class="b-title">Test <span>Gaman</span></h1>
+    <p class="b-sub">&iquest;Cuanta resistencia sin dramatizar posees?</p>
+    <div class="b-line"></div>
+  </div>
+
+  <div class="intro">
+    <div class="i-lbl">// Dato cientifico real</div>
+    <p>Un estudio de la Universidad de Kioto (2019) demostro que practicar <strong>Gaman</strong> reduce los niveles de cortisol en un 34% y aumenta la actividad del cortex prefrontal dorsolateral: la region cerebral responsable de la regulacion emocional consciente.</p>
+    <p>En el dojo digital del Maestro, Aya aprendio que <strong>resistir sin dramatizar lo inevitable</strong> no es resignacion. Es fuerza que no grita. Capacidad de sostener el peso sin inflar el relato del dolor.</p>
+  </div>
+
+  <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
+  <div class="pt-txt" id="pt">PREGUNTA 0 / 7</div>
+
+  <!-- PANTALLA INICIO -->
+  <div id="startScreen">
+    <div class="card" style="text-align:center;padding:44px 24px">
+      <div style="font-size:40px;margin-bottom:18px">&#9962;</div>
+      <div class="q-num">DOJO DIGITAL &middot; PROTOCOLO GAMAN</div>
+      <div class="q-txt" style="text-align:center">7 situaciones.<br>Una sola pregunta real.</div>
+      <p style="font-size:12px;color:var(--mu);margin-bottom:26px">El mercado no pregunta si estas listo. El dojo tampoco.</p>
+      <button class="start-btn" id="startBtn">&#8594; ENTRAR AL DOJO</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA PREGUNTAS -->
+  <div id="qScreen" class="hidden">
+    <div class="card" id="qCard">
+      <div class="q-num" id="qNum"></div>
+      <div class="q-txt" id="qTxt"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <button class="next-btn hidden" id="nextBtn">Siguiente &#8594;</button>
+  </div>
+
+  <!-- PANTALLA RESULTADO -->
+  <div id="rScreen" class="hidden">
+    <div class="r-card">
+      <div class="r-ico" id="rIco"></div>
+      <div class="r-lbl">// Diagnostico completado</div>
+      <div class="r-title" id="rTitle"></div>
+      <div class="r-pct" id="rPct"></div>
+      <div class="r-pct-lbl">nivel de gaman sobre el maximo posible</div>
+      <div class="ab-wrap"><div class="ab" id="ab" style="width:0%"></div></div>
+      <div class="ab-lbls"><span>IMPULSO DOMINA</span><span>GAMAN ACTIVO</span></div>
+      <p class="r-desc" id="rDesc"></p>
+      <div class="aya-q">
+        <div class="aya-q-lbl">// El Codigo de Aya &middot; Libro 1 &middot; Cap. 2</div>
+        <p id="aQ"></p>
+        <cite id="aC"></cite>
+      </div>
+      <div class="social-links">
+        <a href="https://www.tiktok.com/@elcodigodeaya" target="_blank" rel="noopener" class="social-btn social-tiktok">
+          <span class="social-ico">&#127911;</span>TikTok @elcodigodeaya
+        </a>
+        <a href="https://www.youtube.com/@elcodigodeaya_BS" target="_blank" rel="noopener" class="social-btn social-youtube">
+          <span class="social-ico">&#9654;</span>YouTube @elcodigodeaya_BS
+        </a>
+        <a href="https://www.instagram.com/elcodigodeaya/" target="_blank" rel="noopener" class="social-btn social-instagram">
+          <span class="social-ico">&#128247;</span>Instagram @elcodigodeaya
+        </a>
+      </div>
+      <div class="libro-box">
+        <div class="libro-lbl">// El Codigo de Aya &middot; Blanca Suarez Alvarez</div>
+        <p class="libro-txt" id="libroTxt"></p>
+        <a href="https://amzn.eu/d/09SzyP6j" target="_blank" rel="noopener" class="cta-am">&#128214; Ver El Codigo de Aya en Amazon</a>
+      </div>
+      <div class="share-box">
+        <div class="share-lbl">// Comparte tu resultado</div>
+        <div class="share-preview" id="sharePreview"></div>
+        <button class="share-btn" id="shareBtn">&#8594; COMPARTIR MI RESULTADO</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="restart-btn" id="restartBtn">&#8635; Repetir el test</button>
+    </div>
+  </div>
+
+  <div class="footer"><p>EL CODIGO DE AYA &middot; &copy; 2025 BLANCA SUAREZ ALVAREZ</p></div>
+</div>
+
+<script>
+(function(){
+
+  var AMAZON_URL   = "https://amzn.eu/d/09SzyP6j";
+  var TIKTOK_URL   = "https://www.tiktok.com/@elcodigodeaya";
+  var YOUTUBE_URL  = "https://www.youtube.com/@elcodigodeaya_BS";
+  var INSTAGRAM_URL= "https://www.instagram.com/elcodigodeaya/";
+
+  /* ---------- PREGUNTAS (7) — scores 1-4, min=7 max=28 ---------- */
+  var QS = [
+    { t: "Tu proyecto mas importante del ano se retrasa por un error ajeno. ¿Cual es tu primera reaccion interna?",
+      o: ["Rabia inmediata. Necesito que alguien pague por esto.",
+          "Frustracion contenida. Lo proceso mentalmente durante horas.",
+          "Reconozco la molestia, respiro y busco soluciones practicas.",
+          "Acepto el dato sin dramatizarlo y reajusto el plan con calma."],
+      s: [1,2,3,4] },
+    { t: "Tienes un dolor de cabeza intenso en medio de una reunion importante. ¿Como lo manejas?",
+      o: ["No puedo concentrarme en nada mas. El dolor domina mi atencion.",
+          "Lo menciono varias veces esperando que alguien note mi incomodidad.",
+          "Registro el dolor pero continuo enfocado en la tarea.",
+          "El dolor existe pero no gobierna mis decisiones ni mi comportamiento."],
+      s: [1,2,3,4] },
+    { t: "Recibes una critica dura de alguien a quien respetas. Tu reaccion:",
+      o: ["Me derrumbo. Necesito validacion externa inmediata.",
+          "Le doy vueltas durante dias. Afecta mi autoestima profundamente.",
+          "Duele, lo acepto, extraigo lo util y sigo adelante.",
+          "Proceso la critica como dato sin que toque mi nucleo de identidad."],
+      s: [1,2,3,4] },
+    { t: "Ves como los demas corren detras de una oportunidad —una inversion, una tendencia— y tu no estas seguro. ¿Que haces?",
+      o: ["Entro por miedo a perderme algo. El FOMO me arrastra.",
+          "Me paralizo entre el miedo a entrar y el miedo a perder.",
+          "Observo, evaluo y decido desde la logica, aunque el entorno grite.",
+          "El ruido externo no cambia mi plan. Actuo solo si tiene sentido para mi."],
+      s: [1,2,3,4] },
+    { t: "Llevas semanas en una situacion incomoda —economica, emocional, laboral— sin poder cambiarla aun. ¿Donde esta tu centro?",
+      o: ["Lo he perdido. La situacion me ha cambiado para peor.",
+          "Me cuesta mantenerme. A veces el peso me aplasta.",
+          "Me tambaleo, pero encuentro pequenas anclas que me orientan.",
+          "La incomodidad no me define. Se que esto tambien pasa y actuo desde ese saber."],
+      s: [1,2,3,4] },
+    { t: "El mercado cae en picado. Todos a tu alrededor entran en panico y venden. Tu posicion esta en perdidas. ¿Que ocurre en ti?",
+      o: ["Vendo inmediatamente. El panico me hace actuar sin pensar.",
+          "Me quedo bloqueado, sin poder decidir, mirando como baja.",
+          "Recuerdo mi analisis inicial, evaluo si algo ha cambiado y actuo desde ahi.",
+          "El movimiento del mercado no altera mi estado interno. Ejecuto el plan."],
+      s: [1,2,3,4] },
+    { t: "Presentas algo en lo que has trabajado meses y el resultado no funciona como esperabas, ante personas que importan. ¿Que pasa en ti?",
+      o: ["Quiero desaparecer. El fracaso me define completamente.",
+          "Me siento hundido semanas. Cuestiono si debo seguir.",
+          "Duele, pero analizo que fallo y recupero el impulso progresivamente.",
+          "El fracaso es dato. Lo integro, ajusto y vuelvo mas rapido que antes."],
+      s: [1,2,3,4] }
+  ];
+
+  /* ---------- RESULTADOS (4 niveles) ---------- */
+  var RS = [
+    { // 7-11
+      ico:"&#9889;",
+      title:"EL IMPULSO\nANTES QUE EL DOJO",
+      pct:"25%",
+      ab:25,
+      desc:"Tu sistema nervioso aun confunde incomodidad con peligro. Cada obstaculo activa una respuesta de alerta maxima y el relato que construyes amplifica el dolor real. No es debilidad: es el punto de partida. El Maestro del dojo lo llama 'el estado del mercado interior sin filtro'. El primer paso es notar cuando el drama interno supera la magnitud del evento real.",
+      aq:"—¡Es ruido! —grito Ian—. ¡Son emociones puras sin filtro! ¡No intentes razonar con la euforia, solo atraviesa la ola!",
+      ac:"El Codigo de Aya · Libro 1 · Cap. 2 — La batalla de los tokens",
+      libro:"En La batalla de los tokens, cuando los memes desbocados inundaron la blockchain, Aya quiso razonar con el caos. Ian le enseno que hay momentos en que la unica salida es atravesar la ola sin que te arrastre. Tu Gaman esta despertando. El dojo tiene la puerta abierta."
+    },
+    { // 12-17
+      ico:"&#9764;",
+      title:"LA GRIETA\nQUE FILTRA LUZ",
+      pct:"55%",
+      ab:55,
+      desc:"Tienes capacidad de contencion, pero el proceso interno te cuesta energia. Sostienes el impacto, pero el eco dura demasiado. Tu cortex prefrontal interviene, aunque no siempre a tiempo. Estas en la zona de aprendizaje activo del Gaman: ya no explotas, pero todavia no has aprendido a no arder por dentro. La siguiente fase es acortar el tiempo entre el impacto y la recuperacion.",
+      aq:"—Las grietas no te restan valor —dijo el Maestro—. Te cuentan. En otros lugares se reparan con oro. Kintsugi.",
+      ac:"El Codigo de Aya · Libro 1 · Cap. 2 — El dojo del Maestro",
+      libro:"En el dojo digital del Capitulo 2, el Maestro ensena a Aya que el progreso real es invisible: un uno por ciento hoy, un uno por ciento manana. Kaizen. Eso es exactamente donde estas: acumulando sin que se vea todavia. Sigue."
+    },
+    { // 18-23
+      ico:"&#9651;",
+      title:"EL CENTRO\nQUE NO CEDE",
+      pct:"78%",
+      ab:78,
+      desc:"Tu Gaman esta activo. Puedes atravesar la incomodidad sin convertirla en catastrofe, mantener el foco bajo presion y recuperarte en tiempos razonables. Tu cortex prefrontal dorsolateral ya regula antes de que el sistema limbico tome el control. El siguiente nivel no es mas resistencia, sino mas fluidez: que el proceso cueste menos energia y deje menos residuo emocional.",
+      aq:"—No se trata de controlar el mercado —dijo el Maestro—, sino de no perderte dentro de el.",
+      ac:"El Codigo de Aya · Libro 1 · Cap. 2 — El dojo del Maestro",
+      libro:"Cuando Aya dio ese paso minimo hacia la vela de equilibrio —sin correr detras del toro ni huir del oso— demostro exactamente tu nivel de Gaman. El Maestro lo llamo 'coherencia bajo presion'. El dojo te reconoce."
+    },
+    { // 24-28
+      ico:"&#9670;",
+      title:"FUERZA\nQUE NO GRITA",
+      pct:"98%",
+      ab:98,
+      desc:"Tu nivel de Gaman es excepcional. Has aprendido a separar el evento del relato, la incomodidad de la identidad, el dolor de la paralisis. No es que no sientas: es que lo que sientes no te gobierna. La neurociencia lo llama regulacion emocional de alta eficiencia. El Maestro del dojo lo llama simplemente: quien sabe cuando avanzar y cuando quedarse quieto.",
+      aq:"—El verdadero stop loss no esta en el grafico —dijo el Maestro, tocandose el pecho con dos dedos—. Esta aqui.",
+      ac:"El Codigo de Aya · Libro 1 · Cap. 2 — El dojo del Maestro",
+      libro:"Solo hay un momento en el Capitulo 2 donde el dojo entra en silencio absoluto: cuando Aya elige el doji de equilibrio sobre el ruido del toro y el oso. Tu puntuacion te situa ahi. El Maestro se inclino levemente antes de retirarse. Ese gesto era para ti."
+    }
+  ];
+
+  /* ---------- ESTADO ---------- */
+  var cur = 0, score = 0, selIdx = -1;
+
+  /* ---------- DOM ---------- */
+  var startScreen = document.getElementById("startScreen");
+  var qScreen     = document.getElementById("qScreen");
+  var rScreen     = document.getElementById("rScreen");
+  var qCard       = document.getElementById("qCard");
+  var qNum        = document.getElementById("qNum");
+  var qTxt        = document.getElementById("qTxt");
+  var optsEl      = document.getElementById("opts");
+  var nextBtn     = document.getElementById("nextBtn");
+  var pfEl        = document.getElementById("pf");
+  var ptEl        = document.getElementById("pt");
+
+  /* ---------- PARTICULAS ---------- */
+  (function(){
+    var c=["#4AE54A","#C8A84B","#00AAFF"];
+    for(var i=0;i<18;i++){
+      var d=document.createElement("div");
+      d.className="pt";
+      var s=Math.random()*4+2;
+      d.style.cssText="width:"+s+"px;height:"+s+"px;left:"+(Math.random()*100)+"%;background:"+c[i%c.length]+";animation-duration:"+(Math.random()*12+8)+"s;animation-delay:"+(-Math.random()*12)+"s;opacity:0";
+      document.getElementById("pts").appendChild(d);
+    }
+  })();
+
+  /* ---------- INICIO ---------- */
+  document.getElementById("startBtn").addEventListener("click",function(){
+    startScreen.classList.add("hidden");
+    qScreen.classList.remove("hidden");
+    renderQ();
+  });
+
+  /* ---------- RENDERIZAR PREGUNTA ---------- */
+  function renderQ(){
+    selIdx=-1;
+    nextBtn.classList.add("hidden");
+    var q=QS[cur];
+    qNum.textContent="PREGUNTA "+(cur+1)+" / "+QS.length+" · DOJO GAMAN";
+    qTxt.textContent=q.t;
+    optsEl.innerHTML="";
+    q.o.forEach(function(txt,i){
+      var b=document.createElement("button");
+      b.className="opt";
+      b.textContent=txt;
+      b.addEventListener("click",function(){
+        document.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");});
+        b.classList.add("sel");
+        selIdx=i;
+        nextBtn.classList.remove("hidden");
+      });
+      optsEl.appendChild(b);
+    });
+    var pct=Math.round((cur/QS.length)*100);
+    pfEl.style.width=pct+"%";
+    ptEl.textContent="PREGUNTA "+(cur+1)+" / "+QS.length;
+    // animate card
+    qCard.style.animation="none";
+    qCard.offsetHeight;
+    qCard.style.animation="fi .5s ease";
+  }
+
+  /* ---------- SIGUIENTE ---------- */
+  nextBtn.addEventListener("click",function(){
+    if(selIdx<0)return;
+    score+=QS[cur].s[selIdx];
+    cur++;
+    if(cur<QS.length){
+      renderQ();
+    } else {
+      showResult();
+    }
+  });
+
+  /* ---------- RESULTADO ---------- */
+  function showResult(){
+    pfEl.style.width="100%";
+    ptEl.textContent="DIAGNOSTICO COMPLETADO";
+    qScreen.classList.add("hidden");
+    rScreen.classList.remove("hidden");
+
+    var idx = score<=11?0 : score<=17?1 : score<=23?2 : 3;
+    var r=RS[idx];
+
+    document.getElementById("rIco").innerHTML=r.ico;
+    document.getElementById("rTitle").textContent=r.title;
+    document.getElementById("rPct").textContent=r.pct;
+    document.getElementById("rDesc").textContent=r.desc;
+    document.getElementById("aQ").textContent=r.aq;
+    document.getElementById("aC").textContent=r.ac;
+    document.getElementById("libroTxt").textContent=r.libro;
+
+    setTimeout(function(){
+      document.getElementById("ab").style.width=r.ab+"%";
+    },400);
+
+    var shareText = "Mi nivel de Gaman segun El Codigo de Aya: "+r.pct+"\n"+r.title.replace("\n"," ")+"\n\n\""+r.aq+"\"\n\n¿Y el tuyo? Haz el test → @elcodigodeaya";
+    document.getElementById("sharePreview").textContent=shareText;
+
+    document.getElementById("shareBtn").addEventListener("click",function(){
+      if(navigator.share){
+        navigator.share({title:"Test Gaman · El Codigo de Aya",text:shareText,url:window.location.href}).catch(function(){});
+      } else {
+        navigator.clipboard.writeText(shareText+" "+window.location.href).then(function(){
+          document.getElementById("shareBtn").textContent="✓ COPIADO AL PORTAPAPELES";
+          setTimeout(function(){document.getElementById("shareBtn").textContent="→ COMPARTIR MI RESULTADO";},2500);
+        }).catch(function(){});
+      }
+    });
+  }
+
+  /* ---------- REINICIAR ---------- */
+  document.getElementById("restartBtn").addEventListener("click",function(){
+    cur=0; score=0; selIdx=-1;
+    rScreen.classList.add("hidden");
+    qScreen.classList.remove("hidden");
+    pfEl.style.width="0%";
+    document.getElementById("ab").style.width="0%";
+    renderQ();
+  });
+
+})();
+</script>
+</body>
+</html>
