@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test XRP: ¿Entiendes el Puente? — El Código de Aya</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4AE54A;--g2:#B8FF00;--b:#00AAFF;--gold:#C8A84B;--dk:#050A1A;--w:#F0EEE8;--mu:#8A9BB0}
+html,body{min-height:100vh;background:linear-gradient(135deg,#050A1A 0%,#0A1428 100%);color:var(--w);font-family:'Raleway',sans-serif;overflow-x:hidden}
+#pts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:fall linear infinite}
+@keyframes fall{0%{opacity:0;transform:translateY(-10px)}10%{opacity:1}90%{opacity:.3}100%{opacity:0;transform:translateY(100vh)}}
+.wrap{position:relative;z-index:2;max-width:660px;margin:0 auto;padding:36px 20px 80px}
+.brand{text-align:center;margin-bottom:44px}
+.b-tag{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:.8}
+.b-title{font-family:'Orbitron',monospace;font-size:clamp(17px,4.5vw,26px);font-weight:900;line-height:1.15;margin-bottom:8px;text-shadow:0 0 40px rgba(74,229,74,.4)}
+.b-title span{color:var(--g)}
+.b-sub{font-size:13px;color:var(--mu);font-weight:300}
+.b-line{width:60px;height:2px;background:linear-gradient(90deg,var(--g),var(--gold));margin:18px auto 0;box-shadow:0 0 12px rgba(74,229,74,.5)}
+.intro{background:rgba(0,170,255,.06);border:1px solid rgba(0,170,255,.2);border-radius:8px;padding:22px;margin-bottom:32px;position:relative;overflow:hidden}
+.intro::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--b);box-shadow:0 0 10px var(--b)}
+.i-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--b);margin-bottom:8px}
+.intro p{font-size:13.5px;line-height:1.75;color:#C8D8E8;font-weight:300;margin-bottom:8px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--w);font-weight:600}
+.pb{background:rgba(255,255,255,.06);border-radius:4px;height:4px;margin-bottom:8px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--g),var(--gold));border-radius:4px;transition:width .6s ease;box-shadow:0 0 10px rgba(74,229,74,.5)}
+.pt-txt{font-family:'Orbitron',monospace;font-size:8px;color:var(--mu);letter-spacing:2px;text-align:right;margin-bottom:28px}
+.card{background:rgba(5,10,26,.88);border:1px solid rgba(74,229,74,.2);border-radius:12px;padding:28px;margin-bottom:18px;backdrop-filter:blur(10px);animation:fi .5s ease}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--g);margin-bottom:12px}
+.q-txt{font-size:clamp(14px,3vw,18px);font-weight:600;line-height:1.45;color:var(--w);margin-bottom:24px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Raleway',sans-serif;font-size:13px;color:#C0D0E0;line-height:1.4;position:relative;overflow:hidden;transition:all .2s ease;width:100%}
+.opt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);transform:scaleY(0);transition:transform .2s}
+.opt:hover{border-color:rgba(74,229,74,.4);background:rgba(74,229,74,.06);color:var(--w);transform:translateX(3px)}
+.opt:hover::before,.opt.sel::before{transform:scaleY(1)}
+.opt.sel{border-color:var(--g);background:rgba(74,229,74,.1);color:var(--w)}
+.next-btn{background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:11px 20px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;margin-top:16px;width:100%}
+.next-btn:hover{border-color:var(--g);color:var(--g)}
+.r-card{background:rgba(5,10,26,.93);border:1px solid rgba(200,168,75,.35);border-radius:12px;padding:36px 24px;text-align:center;backdrop-filter:blur(12px);animation:fi .7s ease}
+.r-ico{font-size:44px;margin-bottom:14px}
+.r-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:4px;color:var(--gold);margin-bottom:10px}
+.r-title{font-family:'Orbitron',monospace;font-size:clamp(14px,3.5vw,20px);font-weight:900;line-height:1.25;margin-bottom:18px;color:var(--w);white-space:pre-line}
+.r-pct{font-family:'Orbitron',monospace;font-size:clamp(38px,8vw,58px);font-weight:900;color:var(--g);text-shadow:0 0 28px rgba(74,229,74,.6);line-height:1;margin-bottom:6px}
+.r-pct-lbl{font-size:10px;color:var(--mu);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+.r-desc{font-size:13.5px;line-height:1.75;color:#C0D0E0;font-weight:300;max-width:500px;margin:0 auto 24px;text-align:left}
+.ab-wrap{background:rgba(255,255,255,.06);border-radius:6px;height:7px;margin:14px 0 5px;overflow:hidden}
+.ab{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g),var(--gold));box-shadow:0 0 10px rgba(74,229,74,.5);transition:width 1.2s ease}
+.ab-lbls{display:flex;justify-content:space-between;font-size:8px;color:var(--mu);letter-spacing:1px;margin-bottom:28px}
+.aya-q{background:rgba(74,229,74,.06);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:16px 18px;margin:20px 0;text-align:left}
+.aya-q-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:7px}
+.aya-q p{font-style:italic;font-size:13.5px;line-height:1.7;color:#C8D8C8}
+.aya-q cite{display:block;font-size:10px;color:var(--mu);margin-top:7px;font-style:normal;letter-spacing:1px}
+.libro-box{background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.25);border-radius:10px;padding:20px;margin:20px 0;text-align:left}
+.libro-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+.libro-txt{font-size:13px;line-height:1.7;color:#C8C0A0;font-weight:300;margin-bottom:14px}
+.cta-am{display:block;border:1px solid rgba(200,168,75,.5);color:var(--gold);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:14px 20px;border-radius:7px;text-decoration:none;cursor:pointer;transition:all .25s;background:rgba(200,168,75,.08)}
+.cta-am:hover{background:rgba(200,168,75,.18);border-color:var(--gold);color:#FFD700}
+.social-links{display:flex;flex-direction:column;gap:8px;margin:20px 0}
+.social-btn{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:8px;text-decoration:none;font-family:'Raleway',sans-serif;font-size:13px;font-weight:600;transition:all .2s;border:1px solid transparent;cursor:pointer}
+.social-tiktok{background:rgba(0,0,0,.4);border-color:rgba(255,255,255,.15);color:var(--w)}
+.social-tiktok:hover{background:rgba(255,255,255,.08);border-color:var(--w)}
+.social-youtube{background:rgba(255,0,0,.1);border-color:rgba(255,0,0,.3);color:#FF6B6B}
+.social-youtube:hover{background:rgba(255,0,0,.18);border-color:#FF4444}
+.social-instagram{background:rgba(200,100,200,.1);border-color:rgba(200,100,200,.3);color:#E0A0E0}
+.social-instagram:hover{background:rgba(200,100,200,.18);border-color:#CC88CC}
+.social-ico{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.share-box{background:rgba(74,229,74,.05);border:1px solid rgba(74,229,74,.15);border-radius:10px;padding:20px;margin-top:20px;text-align:center}
+.share-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:3px;color:var(--g);margin-bottom:8px}
+.share-preview{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px;margin-bottom:14px;text-align:left;font-size:11.5px;line-height:1.7;color:#9AB8A0;white-space:pre-line;font-family:'Raleway',sans-serif;word-break:break-word}
+.share-btn{background:var(--g);color:#050A1A;border:none;border-radius:7px;padding:13px 24px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;width:100%;display:block}
+.share-btn:hover{background:var(--g2);transform:translateY(-2px)}
+.restart-btn{background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 24px;color:var(--mu);font-family:'Raleway',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;margin-top:16px;display:inline-block}
+.restart-btn:hover{border-color:var(--g);color:var(--g)}
+.start-btn{display:block;background:var(--g);color:#050A1A;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:15px 24px;border-radius:8px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 0 20px rgba(74,229,74,.3);width:100%}
+.start-btn:hover{background:var(--g2);box-shadow:0 0 30px rgba(74,229,74,.5);transform:translateY(-2px)}
+.hidden{display:none!important}
+.footer{text-align:center;margin-top:56px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.footer p{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:rgba(200,168,75,.35)}
+@media(max-width:480px){.wrap{padding:20px 14px 60px}.card,.r-card{padding:20px 16px}}
+</style>
+</head>
+<body>
+<div id="pts"></div>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="b-tag">El Código de Aya &middot; Libro 1 &middot; Cuartel del Flujo</div>
+    <h1 class="b-title">Test <span>XRP</span></h1>
+    <p class="b-sub">&iquest;Entiendes el puente que atraviesa fronteras?</p>
+    <div class="b-line"></div>
+  </div>
+
+  <div class="intro">
+    <div class="i-lbl">// Dato real</div>
+    <p>El sistema bancario internacional tradicional depende de redes de corresponsales, cuentas Nostro y Vostro, liquidaciones diferidas y múltiples intermediarios. Una transferencia internacional puede tardar días y acumular costes invisibles en cada tramo del recorrido.</p>
+    <p>En el <strong>Cuartel del Flujo</strong>, el Maestro mostró a Nex el viejo mundo: dinero atrapado en fronteras, bancos actuando como porteros y liquidez inmovilizada esperando permiso para cruzar.</p>
+    <p>Luego apareció <strong>XRP</strong>: no como una promesa vacía, sino como una idea radicalmente simple. Un puente de liquidez capaz de convertir valor, atravesar el ledger y liberar el movimiento del dinero.</p>
+  </div>
+
+  <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
+  <div class="pt-txt" id="pt">PREGUNTA 0 / 6</div>
+
+  <!-- PANTALLA INICIO -->
+  <div id="startScreen">
+    <div class="card" style="text-align:center;padding:44px 24px">
+      <div style="font-size:40px;margin-bottom:18px">&#127754;</div>
+      <div class="q-num">CUARTEL DEL FLUJO &middot; PROTOCOLO XRP</div>
+      <div class="q-txt" style="text-align:center">6 preguntas.<br>Un solo puente real.</div>
+      <p style="font-size:12px;color:var(--mu);margin-bottom:26px">No se trata solo de precio. Se trata de comprender el flujo.</p>
+      <button class="start-btn" id="startBtn">&#8594; ENTRAR AL PUENTE</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA PREGUNTAS -->
+  <div id="qScreen" class="hidden">
+    <div class="card" id="qCard">
+      <div class="q-num" id="qNum"></div>
+      <div class="q-txt" id="qTxt"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <button class="next-btn hidden" id="nextBtn">Siguiente &#8594;</button>
+  </div>
+
+  <!-- PANTALLA RESULTADO -->
+  <div id="rScreen" class="hidden">
+    <div class="r-card">
+      <div class="r-ico" id="rIco"></div>
+      <div class="r-lbl">// Diagnóstico completado</div>
+      <div class="r-title" id="rTitle"></div>
+      <div class="r-pct" id="rPct"></div>
+      <div class="r-pct-lbl">comprensión del puente XRP</div>
+      <div class="ab-wrap"><div class="ab" id="ab" style="width:0%"></div></div>
+      <div class="ab-lbls"><span>RUIDO DE MERCADO</span><span>FLUJO COMPRENDIDO</span></div>
+      <p class="r-desc" id="rDesc"></p>
+
+      <div class="aya-q">
+        <div class="aya-q-lbl">// El Código de Aya &middot; Cuartel del Flujo</div>
+        <p id="aQ"></p>
+        <cite id="aC"></cite>
+      </div>
+
+      <div class="social-links">
+        <a href="https://www.tiktok.com/@elcodigodeaya" target="_blank" rel="noopener" class="social-btn social-tiktok">
+          <span class="social-ico">&#127911;</span>TikTok @elcodigodeaya
+        </a>
+        <a href="https://www.youtube.com/@elcodigodeaya_BS" target="_blank" rel="noopener" class="social-btn social-youtube">
+          <span class="social-ico">&#9654;</span>YouTube @elcodigodeaya_BS
+        </a>
+        <a href="https://www.instagram.com/elcodigodeaya/" target="_blank" rel="noopener" class="social-btn social-instagram">
+          <span class="social-ico">&#128247;</span>Instagram @elcodigodeaya
+        </a>
+      </div>
+
+      <div class="libro-box">
+        <div class="libro-lbl">// El Código de Aya &middot; Blanca Suárez Álvarez</div>
+        <p class="libro-txt" id="libroTxt"></p>
+        <a href="https://amzn.eu/d/09SzyP6j" target="_blank" rel="noopener" class="cta-am">&#128214; Ver El Código de Aya en Amazon</a>
+      </div>
+
+      <div class="share-box">
+        <div class="share-lbl">// Comparte tu resultado</div>
+        <div class="share-preview" id="sharePreview"></div>
+        <button class="share-btn" id="shareBtn">&#8594; COMPARTIR MI RESULTADO</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button class="restart-btn" id="restartBtn">&#8635; Repetir el test</button>
+    </div>
+  </div>
+
+  <div class="footer"><p>EL CÓDIGO DE AYA &middot; &copy; 2025 BLANCA SUÁREZ ÁLVAREZ</p></div>
+</div>
+
+<script>
+(function(){
+
+  /* ---------- PREGUNTAS (6) — scores 0-3, min=0 max=18 ---------- */
+  var QS = [
+    { t: "¿Qué problema fundamental intenta resolver XRP dentro del sistema financiero global?",
+      o: ["Ser una criptomoneda más para especular con su precio.",
+          "Permitir pagos rápidos entre particulares sin ningún otro propósito.",
+          "Actuar como puente de liquidez entre distintas monedas y jurisdicciones.",
+          "Competir directamente con Bitcoin como reserva de valor descentralizada."],
+      s: [0,1,3,2] },
+
+    { t: "Cuando el Maestro habla de bancos que actúan como porteros, ¿a qué se refiere realmente?",
+      o: ["A los cajeros automáticos de los bancos tradicionales.",
+          "A los bancos corresponsales que intermedian, retienen capital y cobran por mover dinero entre países.",
+          "A las aplicaciones móviles que usan los clientes para enviar transferencias.",
+          "A los reguladores financieros que supervisan los mercados."],
+      s: [0,3,1,2] },
+
+    { t: "En una operación con liquidez bajo demanda, ¿qué ocurre durante el recorrido del valor?",
+      o: ["El dinero queda bloqueado hasta recibir aprobación manual.",
+          "La moneda de origen se convierte directamente en la moneda destino sin ningún activo intermedio.",
+          "El valor puede transformarse temporalmente en XRP, cruzar el ledger y convertirse después en la moneda destino.",
+          "La transferencia se divide en muchas operaciones pequeñas para ocultar su origen."],
+      s: [1,0,3,2] },
+
+    { t: "¿Por qué las cuentas Nostro y Vostro son importantes en esta historia?",
+      o: ["Porque permiten a cualquier persona comprar XRP sin intermediarios.",
+          "Porque representan capital inmovilizado que los bancos mantienen en otros países para poder liquidar pagos.",
+          "Porque son carteras digitales creadas por el XRP Ledger.",
+          "Porque eliminan por completo el riesgo de tipo de cambio."],
+      s: [0,3,1,2] },
+
+    { t: "Si alguien solo mira XRP como una subida o bajada de precio, ¿qué parte esencial está ignorando?",
+      o: ["La narrativa especulativa de corto plazo.",
+          "La posibilidad de hacerse rico de forma inmediata.",
+          "La función de infraestructura, liquidez y puente entre sistemas financieros.",
+          "La comparación directa con las monedas meme."],
+      s: [1,0,3,0] },
+
+    { t: "¿Cuál sería la mejor metáfora para entender XRP dentro del Cuartel del Flujo?",
+      o: ["Una ficha de casino esperando una apuesta.",
+          "Una puerta cerrada que solo algunos bancos pueden abrir.",
+          "Un puente de luz que permite que el valor cruce fronteras con menos fricción.",
+          "Una bóveda donde guardar dinero durante años sin movimiento."],
+      s: [0,1,3,2] }
+  ];
+
+  /* ---------- RESULTADOS (4 niveles) ---------- */
+  var RS = [
+    {
+      ico:"&#9889;",
+      title:"VES EL PRECIO\nPERO NO EL PUENTE",
+      pct:"25%",
+      ab:25,
+      desc:"Tu comprensión de XRP todavía está dominada por el ruido del mercado. Ves velas, subidas, caídas y expectativas, pero aún no has integrado la idea central: XRP no se entiende solo como activo especulativo, sino como posible herramienta de liquidez y transferencia de valor entre sistemas. El primer paso es dejar de mirar únicamente el gráfico y empezar a mirar la fricción que existe detrás del dinero tradicional.",
+      aq:"—No mires solo la ola —dijo el Maestro—. Mira el cauce que permite que el río avance.",
+      ac:"El Código de Aya · Cuartel del Flujo",
+      libro:"En el Cuartel del Flujo, Nex comprendió que el precio era solo la superficie. Bajo ella existían pasillos, bancos corresponsales, liquidez atrapada y fronteras invisibles. Ahí empieza tu aprendizaje: cuando dejas de perseguir el ruido y empiezas a estudiar el sistema."
+    },
+    {
+      ico:"&#127754;",
+      title:"EL FLUJO\nEMPIEZA A ABRIRSE",
+      pct:"55%",
+      ab:55,
+      desc:"Ya entiendes que XRP no es simplemente una moneda digital más. Has captado parte de la lógica del puente, aunque todavía mezclas algunos conceptos: inversión, infraestructura, liquidez, bancos corresponsales y utilidad real. Estás en la fase en la que el mapa empieza a ordenarse. La clave ahora es distinguir entre narrativa de mercado y función técnica.",
+      aq:"—El puente no grita —susurró el Maestro—. Solo está ahí cuando alguien necesita cruzar.",
+      ac:"El Código de Aya · Cuartel del Flujo",
+      libro:"Nex también creyó al principio que el valor estaba en la promesa. Después comprendió que el verdadero valor estaba en reducir fricción. Cada respuesta correcta en este test es una pieza más del puente que empieza a formarse ante tus ojos."
+    },
+    {
+      ico:"&#9671;",
+      title:"COMPRENDES\nEL PUENTE",
+      pct:"78%",
+      ab:78,
+      desc:"Tu lectura de XRP ya va más allá del precio. Entiendes su papel como puente de liquidez, la importancia de las transferencias transfronterizas, el problema del capital inmovilizado y la lógica de mover valor con menos intermediarios. No estás mirando solo una criptomoneda: estás observando una posible pieza de infraestructura financiera.",
+      aq:"—Cuando el valor deja de pedir permiso en cada frontera, el mundo cambia de velocidad.",
+      ac:"El Código de Aya · Cuartel del Flujo",
+      libro:"En esta fase, Nex vio el sistema desde arriba: no como bancos aislados, sino como nodos conectados por ríos de liquidez. Esa es tu posición ahora. No lo sabes todo, pero ya has cruzado el umbral más importante: has dejado de confundir el puente con el ruido que lo rodea."
+    },
+    {
+      ico:"&#128142;",
+      title:"ARQUITECTO\nDEL FLUJO",
+      pct:"98%",
+      ab:98,
+      desc:"Tu comprensión de XRP es sólida. Distingues entre especulación y utilidad, entiendes el problema de los bancos corresponsales, reconoces el papel de la liquidez bajo demanda y percibes la importancia de reducir fricción en los pagos globales. No estás mirando una simple apuesta: estás interpretando una arquitectura de movimiento de valor.",
+      aq:"—El verdadero poder no está en poseer el puente —dijo el Maestro—, sino en comprender por qué el mundo necesita cruzarlo.",
+      ac:"El Código de Aya · Cuartel del Flujo",
+      libro:"Solo cuando Nex dejó de preguntar cuánto valía el puente y empezó a preguntar qué conectaba, el Cuartel del Flujo abrió sus compuertas. Tu resultado indica que ya no observas XRP desde la superficie. Has empezado a leer el sistema."
+    }
+  ];
+
+  /* ---------- ESTADO ---------- */
+  var cur = 0, score = 0, selIdx = -1;
+
+  /* ---------- DOM ---------- */
+  var startScreen = document.getElementById("startScreen");
+  var qScreen     = document.getElementById("qScreen");
+  var rScreen     = document.getElementById("rScreen");
+  var qCard       = document.getElementById("qCard");
+  var qNum        = document.getElementById("qNum");
+  var qTxt        = document.getElementById("qTxt");
+  var optsEl      = document.getElementById("opts");
+  var nextBtn     = document.getElementById("nextBtn");
+  var pfEl        = document.getElementById("pf");
+  var ptEl        = document.getElementById("pt");
+
+  /* ---------- PARTÍCULAS ---------- */
+  (function(){
+    var c=["#4AE54A","#C8A84B","#00AAFF"];
+    for(var i=0;i<18;i++){
+      var d=document.createElement("div");
+      d.className="pt";
+      var s=Math.random()*4+2;
+      d.style.cssText="width:"+s+"px;height:"+s+"px;left:"+(Math.random()*100)+"%;background:"+c[i%c.length]+";animation-duration:"+(Math.random()*12+8)+"s;animation-delay:"+(-Math.random()*12)+"s;opacity:0";
+      document.getElementById("pts").appendChild(d);
+    }
+  })();
+
+  /* ---------- INICIO ---------- */
+  document.getElementById("startBtn").addEventListener("click",function(){
+    startScreen.classList.add("hidden");
+    qScreen.classList.remove("hidden");
+    renderQ();
+  });
+
+  /* ---------- RENDERIZAR PREGUNTA ---------- */
+  function renderQ(){
+    selIdx=-1;
+    nextBtn.classList.add("hidden");
+    var q=QS[cur];
+    qNum.textContent="PREGUNTA "+(cur+1)+" / "+QS.length+" · PROTOCOLO XRP";
+    qTxt.textContent=q.t;
+    optsEl.innerHTML="";
+    q.o.forEach(function(txt,i){
+      var b=document.createElement("button");
+      b.className="opt";
+      b.textContent=txt;
+      b.addEventListener("click",function(){
+        document.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");});
+        b.classList.add("sel");
+        selIdx=i;
+        nextBtn.classList.remove("hidden");
+      });
+      optsEl.appendChild(b);
+    });
+    var pct=Math.round((cur/QS.length)*100);
+    pfEl.style.width=pct+"%";
+    ptEl.textContent="PREGUNTA "+(cur+1)+" / "+QS.length;
+    qCard.style.animation="none";
+    qCard.offsetHeight;
+    qCard.style.animation="fi .5s ease";
+  }
+
+  /* ---------- SIGUIENTE ---------- */
+  nextBtn.addEventListener("click",function(){
+    if(selIdx<0)return;
+    score+=QS[cur].s[selIdx];
+    cur++;
+    if(cur<QS.length){
+      renderQ();
+    } else {
+      showResult();
+    }
+  });
+
+  /* ---------- RESULTADO ---------- */
+  function showResult(){
+    pfEl.style.width="100%";
+    ptEl.textContent="DIAGNÓSTICO COMPLETADO";
+    qScreen.classList.add("hidden");
+    rScreen.classList.remove("hidden");
+
+    var idx = score<=4?0 : score<=9?1 : score<=14?2 : 3;
+    var r=RS[idx];
+
+    document.getElementById("rIco").innerHTML=r.ico;
+    document.getElementById("rTitle").textContent=r.title;
+    document.getElementById("rPct").textContent=r.pct;
+    document.getElementById("rDesc").textContent=r.desc;
+    document.getElementById("aQ").textContent=r.aq;
+    document.getElementById("aC").textContent=r.ac;
+    document.getElementById("libroTxt").textContent=r.libro;
+
+    setTimeout(function(){
+      document.getElementById("ab").style.width=r.ab+"%";
+    },400);
+
+    var shareText = "Mi comprensión del puente XRP según El Código de Aya: "+r.pct+"\n"+r.title.replace("\n"," ")+"\n\n\""+r.aq+"\"\n\n¿Y tú? Haz el test → @elcodigodeaya";
+    document.getElementById("sharePreview").textContent=shareText;
+
+    document.getElementById("shareBtn").addEventListener("click",function(){
+      if(navigator.share){
+        navigator.share({title:"Test XRP · El Código de Aya",text:shareText,url:window.location.href}).catch(function(){});
+      } else {
+        navigator.clipboard.writeText(shareText+" "+window.location.href).then(function(){
+          document.getElementById("shareBtn").textContent="✓ COPIADO AL PORTAPAPELES";
+          setTimeout(function(){document.getElementById("shareBtn").textContent="→ COMPARTIR MI RESULTADO";},2500);
+        }).catch(function(){});
+      }
+    });
+  }
+
+  /* ---------- REINICIAR ---------- */
+  document.getElementById("restartBtn").addEventListener("click",function(){
+    cur=0; score=0; selIdx=-1;
+    rScreen.classList.add("hidden");
+    qScreen.classList.remove("hidden");
+    pfEl.style.width="0%";
+    document.getElementById("ab").style.width="0%";
+    renderQ();
+  });
+
+})();
+</script>
+</body>
+</html>
